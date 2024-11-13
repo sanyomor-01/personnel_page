@@ -1,0 +1,209 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #094277a4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  color: #333;
+}
+
+/* Container styling for forms and dashboard */
+.container {
+  background-color: #f2f5fb;
+  padding: 2rem;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  text-align: center;
+}
+
+h2 {
+  color: #444444;
+  margin-bottom: 1rem;
+}
+
+/* Input fields styling */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="url"],
+input[type="date"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 16px;
+  color: #333;
+}
+
+input[type="text"]:focus,
+input[type="url"]:focus,
+input[type="email"]:focus,
+input[type="date"]:focus {
+  border-color: #1f6ad9f1;
+  outline: none;
+}
+
+/* Button styling */
+button {
+  width: auto; /* Fit to content */
+  padding: 8px 16px;
+  background-color: #1f6ad9f1;
+  border: none;
+  color: #fff;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #2909dd;
+}
+
+/* Link styling */
+a {
+  color: #4c4eaf;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Styling for error or success messages */
+.message {
+  margin: 10px 0;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.error {
+  background-color: #fdecea;
+  color: #e74c3c;
+}
+
+.success {
+  background-color: #eafaf1;
+  color: #2ecc71;
+}
+
+.login-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+/* Success and Error Messages 
+.message {
+  margin: 20px 0;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  color: #2ecc71;
+  background-color: #eafaf1;
+  text-align: center;
+}*/
+
+.btn-view-profile {
+  display: inline-block;
+  padding: 8px 16px;
+  margin-top: 10px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+  width: auto;
+}
+
+.btn-view-profile:hover {
+  background-color: #2980b9;
+}
+
+.btn-logout {
+  display: inline-block;
+  padding: 8px 16px;
+  margin-top: 10px;
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  width: auto;
+}
+
+.btn-logout:hover {
+  background-color: #c0392b;
+}
+
+/* Container for the entire form */
+.container {
+  width: 500px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+/* Style for the social media platform select box */
+select#social_platforms {
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 100%;
+  background-color: #fff;
+  font-size: 16px;
+  color: #333;
+}
+
+#social_links {
+  margin-top: 20px;
+}
+
+#social_links label {
+  display: block;
+  font-size: 14px;
+  margin-top: 10px;
+  color: #333;
+}
+
+#social_links input[type="url"] {
+  width: calc(100% - 20px); /*  full width minus padding */
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.social-link-input {
+  display: none;
+  margin-left: 10px;
+}
+.container img {
+  border-radius: 50%;
+  margin-bottom: 20px;
+  border: 2px solid #ddd;
+}
+
+.success-message {
+  color: green;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+}
