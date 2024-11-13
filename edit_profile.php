@@ -1,32 +1,26 @@
 <?php
 session_start();
 
-// Database connection
 require 'db_connect.php';
 
-// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
 
-// Validate if the user has permission to edit
 $user_id = $_SESSION['user_id'];
-$role = $_SESSION['role'];  // Assuming role is set in session on login (e.g., 'admin' or 'user')
+$role = $_SESSION['role'];  
 
-// Ensure user can only edit their own profile or that an admin is accessing the profile
-$personnelID = $_GET['id'] ?? $user_id;  // Fetch the ID from URL if admin or use logged-in user ID
+$personnelID = $_GET['id'] ?? $user_id; 
 if ($role !== 'admin' && $user_id != $personnelID) {
     echo "You do not have permission to edit this profile.";
     exit();
 }
 
-// Fetch user data for editing
 $stmt = $pdo->prepare("SELECT * FROM Personnel WHERE PersonnelID = :personnelID");
 $stmt->execute([':personnelID' => $personnelID]);
 $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Process form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $firstName = htmlspecialchars(trim($_POST['first_name']));
     $lastName = htmlspecialchars(trim($_POST['last_name']));
@@ -35,7 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $startDate = $_POST['start_date'];
     $endDate = $_POST['end_date'];
 
-    // Update the profile information securely using prepared statements
     $stmt = $pdo->prepare("UPDATE Personnel SET FirstName = :firstName, LastName = :lastName, Phone = :phone, Email = :email, StartDate = :startDate, EndDate = :endDate WHERE PersonnelID = :personnelID");
     $stmt->execute([
         ':firstName' => $firstName,
@@ -82,6 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <button type="submit">Update Profile</button>
     </form>
+    
 </div>
 </body>
 </html>

@@ -7,7 +7,6 @@ require 'db_connect.php';
 
 $message = '';
 
-// Display success message if passed in URL
 if (isset($_GET['message'])) {
     $message = htmlspecialchars($_GET['message']);
 }
@@ -21,7 +20,6 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 try {
-    // Fetch user personnel data
     $sql = "SELECT * FROM personnel WHERE PersonnelID = :user_id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':user_id' => $user_id]);
@@ -38,20 +36,17 @@ try {
     $stmt->execute([':user_id' => $user_id]);
     $education = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    // Fetch contact data
     $sql = "SELECT * FROM contact WHERE PersonnelID = :user_id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':user_id' => $user_id]);
     $contact = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Fetch project data
     $sql = "SELECT * FROM projects WHERE PersonnelID = :user_id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':user_id' => $user_id]);
     $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
-    // Query to fetch the latest StartDate and EndDate for the user's education
 $sql = "
 SELECT StartDate, EndDate 
 FROM education 
@@ -63,13 +58,11 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute([':user_id' => $user_id]);
 $educationDates = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Fetch web presence data
     $sql = "SELECT * FROM webpresence WHERE PersonnelID = :user_id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':user_id' => $user_id]);
     $webPresences = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Default profile picture if not set
     if ($personnel) {
         $profilePicture = $personnel['ProfilePicture'] ?? 'defaultprofile.jpg';
     }
@@ -81,6 +74,8 @@ $educationDates = $stmt->fetch(PDO::FETCH_ASSOC);
 
 <!DOCTYPE html>
 <html lang="en">
+<button onclick="window.history.back()">Go Back</button>
+
 <head>
     <meta charset="UTF-8">
     <title>Your Profile</title>

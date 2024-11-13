@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     header("Location: login.php");
@@ -46,6 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_personnel'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+<button onclick="window.history.back()">Go Back</button>
+
 <head>
     <meta charset="UTF-8">
     <title>Admin Dashboard - Personnel Management</title>
@@ -97,15 +100,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_personnel'])) {
                 <td><?= htmlspecialchars($person['email']) ?></td>
                 <td><?= htmlspecialchars($person['role']) ?></td>
                 <td>
-                    <a href="edit_profile.php?id=<?= $person['PersonnelID'] ?>">Edit</a> |
-                    <a href="?delete=<?= $person['PersonnelID'] ?>" onclick="return confirm('Are you sure you want to delete this personnel?')">Delete</a>
-                    <a href="delete.php?id=<?= $person['PersonnelID'] ?>" onclick="return confirm('Are you sure you want to delete this record?');">Delete</a>
+                 
+                    <a href="edit_profile.php?id=<?= $person['PersonnelID'] ?>"class="btn btn-edit">Edit Profile</a> |
+                    <!-- <a href="?delete=<?= $person['PersonnelID'] ?>" onclick="return confirm('Are you sure you want to delete this personnel?')">Delete</a> -->
+                   <a href="delete.php?id=<?= $person['PersonnelID'] ?>" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this personnel?');">Delete Profile</a>
                 </td>
             </tr>
         <?php endforeach; ?>
     </table> <br>
     <form action="logout.php" method="POST">
             <button type="submit" class="btn-logout">Logout</button>
+        </form> 
+        <form action="dashboard.php" method="POST">
+            <button type="submit" class="btn-dasboard">User Dashboard</button>
         </form>
 </body>
 </html>

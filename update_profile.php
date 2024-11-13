@@ -75,7 +75,7 @@ ob_start();
             ':bio' => $bio,
             ':project' => $project,
             ':department' => $department,
-            'email' =>$email
+            'email' =>$email,
             ':gender' => $gender,
             ':user_id' => $user_id
         ];
@@ -87,14 +87,12 @@ ob_start();
         $stmt = $pdo->prepare($sql);
         $stmt->execute($params);
 
-        // Update Contact Table for Phone Number
         $stmt = $pdo->prepare("UPDATE contact SET PhoneNumber = :phone_number WHERE PersonnelID = :user_id");
         $stmt->execute([
             ':phone_number' => $phoneNumber,
             ':user_id' => $user_id
         ]);
 
-        // Check and retrieve InstitutionID from institution table
         $stmt = $pdo->prepare("SELECT InstitutionID FROM institution WHERE InstitutionName = :institution_name");
         $stmt->execute([':institution_name' => $institution]);
         $institutionData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -107,7 +105,6 @@ ob_start();
             exit();
         }
 
-        // Check for duplicates in Education Table
         $sql = "SELECT COUNT(*) FROM Education 
                 WHERE PersonnelID = :user_id AND InstitutionID = :institution_id AND FieldOfStudyID = :field_of_study";
         $stmt = $pdo->prepare($sql);
@@ -122,11 +119,9 @@ ob_start();
         if ($count > 0) {
             echo "This institution and field of study already exist.";
         } else {
-            // Delete previous education entry if any
             $stmt = $pdo->prepare("DELETE FROM Education WHERE PersonnelID = :user_id");
             $stmt->execute([':user_id' => $user_id]);
 
-            // Insert new Education entry
             $stmt = $pdo->prepare("INSERT INTO Education (PersonnelID, InstitutionID, FieldOfStudyID, StartDate, EndDate) 
                                    VALUES (:user_id, :institution_id, :field_of_study, :start_date, :end_date)");
             $stmt->execute([
@@ -138,7 +133,6 @@ ob_start();
             ]);
         }
 
-        // Check for duplicate projects and insert if unique
         $sql = "SELECT COUNT(*) FROM projects WHERE PersonnelID = :user_id AND ProjectTitle = :project_title";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([':user_id' => $user_id, ':project_title' => $project_title]);
@@ -154,22 +148,18 @@ ob_start();
 
         foreach ($socialLinks as $platform => $link) {
             if (!empty($link)) {
-                // Check if the platform already exists in WebService
                 $stmt = $pdo->prepare("SELECT WebServiceID FROM WebService WHERE Name = :platform");
                 $stmt->execute([':platform' => $platform]);
                 $platformData = $stmt->fetch(PDO::FETCH_ASSOC);
         
                 if ($platformData) {
-                    // If platform exists, get the ID
                     $webServiceID = $platformData['WebServiceID'];
                 } else {
-                    // If platform does not exist, insert it and get the new ID
                     $stmt = $pdo->prepare("INSERT INTO WebService (Name) VALUES (:platform)");
                     $stmt->execute([':platform' => $platform]);
                     $webServiceID = $pdo->lastInsertId();
                 }
         
-                // Check if a WebPresence entry exists for this user and platform
                 $stmt = $pdo->prepare("SELECT * FROM WebPresence WHERE PersonnelID = :personnel_id AND WebServiceID = :platform_id");
                 $stmt->execute([':personnel_id' => $user_id, ':platform_id' => $webServiceID]);
         

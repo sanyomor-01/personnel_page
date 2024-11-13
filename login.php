@@ -1,14 +1,11 @@
 <?php
 session_start();
-require 'db_connect.php'; // Include database connection
+require 'db_connect.php'; 
 
-// Check if form is submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Sanitize inputs
-    $username = trim(htmlspecialchars($_POST['username'])); // Sanitize username
-    $password = trim($_POST['password']); // Password sanitization is not needed, but trimming spaces
+    $username = trim(htmlspecialchars($_POST['username'])); 
+    $password = trim($_POST['password']); 
 
-    // Validate inputs to make sure they're not empty
     if (empty($username) || empty($password)) {
         $message = "Username and password are required.";
     } else {
@@ -18,12 +15,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($user && password_verify($password, $user['Password'])) {
-            // Store user info in session if credentials are correct
             $_SESSION['user_id'] = $user['PersonnelID'];
             $_SESSION['username'] = $user['Username'];
             $_SESSION['role'] = $user['role'];
 
-            // Redirect based on role
             if ($_SESSION['role'] == 'admin') {
                 header("Location: admin_dashboard.php");
                 exit();
@@ -32,7 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 exit();
             }
         } else {
-            // Invalid credentials
             $message = "Invalid username or password.";
         }
     }
@@ -41,17 +35,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
+<!-- <button onclick="window.history.back()">Go Back</button> -->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="css/style.css"> <!-- Link to your CSS file -->
+    <link rel="stylesheet" href="css/style.css"> 
 </head>
 <body>
 
 <div class="login-container">
     <h2>Login</h2>
-    <!-- This will display any login error messages if you set them in your PHP code -->
     <?php if (isset($error_message)) { echo "<p class='error'>$error_message</p>"; } ?>
 
     <form action="login.php" method="POST">
@@ -70,6 +65,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <?php
 if (isset($message)) {
-    echo "<p>" . htmlspecialchars($message) . "</p>"; // Output the sanitized message
+    echo "<p>" . htmlspecialchars($message) . "</p>"; 
 }
 ?>

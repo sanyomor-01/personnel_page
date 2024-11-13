@@ -1,5 +1,5 @@
 <?php
-$newPassword = 'santorini'; // Replace with your desired password
+$newPassword = ''; 
 $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
 echo $hashedPassword;
 ?>
