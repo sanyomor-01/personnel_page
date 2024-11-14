@@ -2,6 +2,7 @@
 session_start();
 require 'db_connect.php';
 
+// Array of institutions for dropdown
 $institutions = [
     "Kwame Nkrumah University of Science and Technology",
     "University of Education, Winneba",
@@ -35,6 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $project_title = $_POST['project_title'];
     $project_role = $_POST['project_role'];
     $phoneNumber = $_POST['phone'];
+    $email = $_POST['email'];
     $socialLinks = isset($_POST['social_links']) ? $_POST['social_links'] : [];
 
     $profilePicturePath = null;
@@ -58,7 +60,8 @@ ob_start();
                     Bio = :bio, 
                     Project = :project, 
                     Department = :department, 
-                    Email = :email,
+                    email = :email,
+                    Phone = :phone,
                     Gender = :gender";
 
         if ($profilePicturePath) {
@@ -75,6 +78,7 @@ ob_start();
             ':project' => $project,
             ':department' => $department,
             'email' =>$email,
+            'phone' =>$phoneNumber,
             ':gender' => $gender,
             ':user_id' => $user_id
         ];
@@ -86,11 +90,11 @@ ob_start();
         $stmt = $pdo->prepare($sql);
         $stmt->execute($params);
 
-        $stmt = $pdo->prepare("UPDATE contact SET PhoneNumber = :phone_number WHERE PersonnelID = :user_id");
-        $stmt->execute([
-            ':phone_number' => $phoneNumber,
-            ':user_id' => $user_id
-        ]);
+        //$stmt = $pdo->prepare("UPDATE contact SET PhoneNumber = :phone_number WHERE PersonnelID = :user_id");
+        // $stmt->execute([
+            // ':phone_number' => $phoneNumber,
+            // ':user_id' => $user_id
+        // ]);
 
         $stmt = $pdo->prepare("SELECT InstitutionID FROM institution WHERE InstitutionName = :institution_name");
         $stmt->execute([':institution_name' => $institution]);
@@ -230,7 +234,6 @@ ob_start();
         <select name="gender" required>
             <option value="Male" <?= isset($gender) && $gender == 'Male' ? 'selected' : '' ?>>Male</option>
             <option value="Female" <?= isset($gender) && $gender == 'Female' ? 'selected' : '' ?>>Female</option>
-            <option value="Other" <?= isset($gender) && $gender == 'Other' ? 'selected' : '' ?>>Other</option>
         </select><br>
 
 
@@ -297,9 +300,12 @@ $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     
 
+    <label>Email:</label>
+    <input type="text" name="email" placeholder="Email"  value="<?= htmlspecialchars($personnel['email']?? ''); ?>"><br>
+    
+    <label>Phone Number:</label>
+        <input type="text" name="phone" placeholder="Phone Number"  value="<?= htmlspecialchars($personnel['Phone']?? ''); ?>"><br>
 
-        <label>Phone Number:</label>
-        <input type="text" name="phone" placeholder="Phone Number"><br>
         
         
         
