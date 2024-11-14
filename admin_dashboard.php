@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_personnel'])) {
     <?php endif; ?>
 
     <h2>Personnel List</h2>
-<h3>Add New Personnel</h3>
+    <h3>Add New Personnel</h3>
     <?php if (isset($message)) echo "<p>" . htmlspecialchars($message) . "</p>"; ?>
     <form method="POST">
         <input type="text" name="first_name" placeholder="First Name" required>
