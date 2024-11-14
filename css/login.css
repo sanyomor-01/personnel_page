@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap');
+:root{
+    --font-family : "Inter";
+    --gap-24      : 24px;
+    --gap-16      : 16px;
+    --gap-8       : 8px;
+    --gap-4       :4px;
+}
+
+html{
+    font-family: var(--font-family);
+    line-height: 1.5;
+    font-size: 14px;
+    color: #4c4c4c;
+}
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background: #f6f6f6;
+}
+main{
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+.title{
+    font-size: 38px;
+    font-weight: 600;
+}
+
+.login-container{
+    width: 400px;
+    margin: auto;
+    padding: 16px;
+    height: fit-content;
+    background: white;
+    margin-top: 100px;
+    border-radius: 2px;
+
+}
+.fieldset{
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-16);
+}
+
+form{
+
+    display: grid;
+    gap: var(--gap-24);
+}
+form > legend{
+    font-size: 32px;
+    font-weight: 600;
+}
+
+label{
+    font-size: 18px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+.input-field{
+    display: grid;
+    gap: var(--gap-4);
+}
+input{
+    border: none;
+    padding: 14px 16px;
+    background: #f6f6f6;
+    border-radius: 4px;
+}
+input:focus{
+    outline: 1.5px solid #d1d1d1;
+
+}
+button{
+    border: 0;
+    font-size: 20px;
+    border-radius: 4px;
+    padding: 12px 0;
+    color: #f6f6f6;
+    background: #4c4c4c;
+    cursor: pointer;
+
+}
+button:hover{
+    background: #5d5d5d;
+}

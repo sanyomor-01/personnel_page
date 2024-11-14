@@ -35,30 +35,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
-<button onclick="window.history.back()" class="back-button">Go Back</button>
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="css/style.css"> 
+    <link rel="stylesheet" href="./css/login.css"> 
 </head>
 <body>
+<main> 
+    <h1 class="title" >National Service Personnels - UCC<h1>
 
-<div class="login-container">
-    <h2>Login</h2>
-    <?php if (isset($error_message)) { echo "<p class='error'>$error_message</p>"; } ?>
-
-    <form action="login.php" method="POST">
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username" required>
-
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" required>
-
-        <button type="submit">Login</button>
-    </form>
-</div>
+    <section class="login-container">        
+        <?php if (isset($error_message)) { echo "<p class='error'>$error_message</p>"; } ?>
+    
+        <form action="login.php" method="POST">
+            <legend>Login</legend>
+            <div class="fieldset">
+                
+                <div class="input-field">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+        
+                <div class="input-field">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+            </div>
+    
+            <button type="submit">Login</button>
+        </form>
+</section>
+</main>
 
 </body>
 </html>

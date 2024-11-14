@@ -1,3 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap');
+
+:root{
+  --font-family:"Inter";
+}
+
+html{
+  font-family: var(--font-family);
+}
 body {
   font-family: Arial, sans-serif;
   background-color: #094277a4;
