@@ -36,10 +36,10 @@ try {
     $stmt->execute([':user_id' => $user_id]);
     $education = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    $sql = "SELECT * FROM contact WHERE PersonnelID = :user_id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([':user_id' => $user_id]);
-    $contact = $stmt->fetch(PDO::FETCH_ASSOC);
+   // $sql = "SELECT * FROM contact WHERE PersonnelID = :user_id";
+    //$stmt = $pdo->prepare($sql);
+  //  $stmt->execute([':user_id' => $user_id]);
+    //$contact = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $sql = "SELECT * FROM projects WHERE PersonnelID = :user_id";
     $stmt = $pdo->prepare($sql);
@@ -101,8 +101,8 @@ $educationDates = $stmt->fetch(PDO::FETCH_ASSOC);
     <p><strong>Bio:</strong> <?= htmlspecialchars($personnel['Bio'] ?? 'N/A'); ?></p>
 
     <h3>Contact Information</h3>
-    <p><strong>Phone Number:</strong> <?= htmlspecialchars($contact['PhoneNumber'] ?? 'N/A'); ?></p>
-    <p><strong>Email Address:</strong> <?= htmlspecialchars($contact['EmailAddress'] ?? 'N/A'); ?></p>
+    <p><strong>Phone Number:</strong> <?= htmlspecialchars($personnel['Phone'] ?? 'N/A'); ?></p>
+    <p><strong>Email Address:</strong> <?= htmlspecialchars($personnel['email'] ?? 'N/A'); ?></p>
 
     <h3>Education</h3>
     <?php if ($education): ?>
