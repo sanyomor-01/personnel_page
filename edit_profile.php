@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':personnelID' => $personnelID
     ]);
 
-    echo "<p class='success'>Profile updated successfully!</p>";
+    $successMessage = "<p class='success-message'>Profile updated successfully!</p>";
 }
 ?>
 
@@ -54,6 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 <div class="container">
     <h2>Edit Profile</h2>
+    <?php if (isset($successMessage)) echo $successMessage; ?>
+
     <form method="POST" action="edit_profile.php?id=<?= htmlspecialchars($personnelID) ?>">
         <label>First Name:</label>
         <input type="text" name="first_name" value="<?= htmlspecialchars($userData['FirstName'] ?? '') ?>" required><br>
