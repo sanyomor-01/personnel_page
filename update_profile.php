@@ -2,7 +2,6 @@
 session_start();
 require 'db_connect.php';
 
-// Array of institutions for dropdown
 $institutions = [
     "Kwame Nkrumah University of Science and Technology",
     "University of Education, Winneba",
@@ -196,6 +195,8 @@ ob_start();
 
 <!DOCTYPE html>
 <html lang="en">
+<button onclick="window.history.back()" class="back-button">Go Back</button>
+
 <head>
     <meta charset="UTF-8">
     <title>Update Profile</title>
