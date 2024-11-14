@@ -35,7 +35,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
-<button onclick="window.history.back()" class="back-button">Go Back</button>
 
 <head>
     <meta charset="UTF-8">
