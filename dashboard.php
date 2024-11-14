@@ -24,7 +24,7 @@ $personnel = $stmt->fetch(PDO::FETCH_ASSOC);
 
 <!DOCTYPE html>
 <html lang="en">
-<button onclick="window.history.back()">Go Back</button>
+<button onclick="window.history.back()" class="back-button">Go Back</button>
 
 <head>
     <meta charset="UTF-8">
