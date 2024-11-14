@@ -23,25 +23,24 @@ body{
     background: #f6f6f6;
 }
 main{
-    margin: 20px auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    place-items: center;
+    height: 100vh;
+    
 
 }
 .title{
-    font-size: 38px;
+    font-size: 24px;
     font-weight: 600;
+    text-align: center;
 }
 
 .login-container{
-    width: 400px;
+    min-width: 500px;
     margin: auto;
-    padding: 16px;
+    padding: 24px;
     height: fit-content;
     background: white;
-    margin-top: 100px;
     border-radius: 2px;
 
 }
@@ -52,13 +51,14 @@ main{
 }
 
 form{
-
     display: grid;
     gap: var(--gap-24);
 }
 form > legend{
-    font-size: 32px;
-    font-weight: 600;
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
+    margin-top: var(--gap-8);
 }
 
 label{

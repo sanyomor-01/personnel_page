@@ -44,15 +44,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body>
 <main> 
-    <h1 class="title" >National Service Personnels - UCC<h1>
 
-    <section class="login-container">        
+    <section class="login-container"> 
+        <h1 class="title" >National Service Personnels<h1>
         <?php if (isset($error_message)) { echo "<p class='error'>$error_message</p>"; } ?>
     
         <form action="login.php" method="POST">
             <legend>Login</legend>
             <div class="fieldset">
-                
+
                 <div class="input-field">
                     <label for="username">Username</label>
                     <input type="text" id="username" name="username" required>
