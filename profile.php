@@ -86,7 +86,7 @@ $educationDates = $stmt->fetch(PDO::FETCH_ASSOC);
 <?php if (!empty($message)): ?>
         <p class="message success"><?= $message ?></p>
     <?php endif; ?>
-    <h2>Your Complete Profile</h2>
+    <h1>Your Complete Profile</h1>
     
     <h3>Personal Information</h3>
     <img src="<?= htmlspecialchars($profilePicture); ?>" alt="Profile Picture" style="width:150px;height:150px;border-radius:50%;">
