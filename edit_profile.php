@@ -54,7 +54,7 @@ exit();
 </head>
 <body>
 <div class="container">
-    <h2>Edit Profile</h2>
+    <h1>Edit Profile</h1>
     <?php if (isset($successMessage)) echo $successMessage; ?>
 
     <form method="POST" action="edit_profile.php?id=<?= htmlspecialchars($personnelID) ?>">
