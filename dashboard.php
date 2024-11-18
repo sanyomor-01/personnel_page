@@ -33,7 +33,7 @@ $personnel = $stmt->fetch(PDO::FETCH_ASSOC);
 </head>
 <body>
     <div class="container">
-         <h2>Welcome, <?= htmlspecialchars($_SESSION['username']); ?>!</h2> 
+         <h1>Welcome, <?= htmlspecialchars($_SESSION['username']); ?>!</h1> 
         <p>You are logged in as <?= htmlspecialchars($_SESSION['username']); ?>.</p>
 
         <div class="profile-overview">
