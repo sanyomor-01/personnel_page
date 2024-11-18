@@ -325,3 +325,37 @@ font-size: 1rem;
   font-weight: bold;
 margin-bottom: 10px;
 }
+
+
+
+
+
+/* Style to align checkboxes and labels */
+.platform-label {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.platform-label input[type="checkbox"] {
+    margin-right: 8px; 
+}
+
+form {
+    margin: 20px;
+}
+
+#social_links label {
+    display: block;
+    margin-top: 10px;
+}
+
+#social_links input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
