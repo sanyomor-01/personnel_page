@@ -39,8 +39,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':endDate' => $endDate,
         ':personnelID' => $personnelID
     ]);
-
-    $successMessage = "<p class='success-message'>Profile updated successfully!</p>";
+ $_SESSION['success_message'] = "Profile updated successfully!";
+header("Location: admin_dashboard.php");
+exit();
 }
 ?>
 
