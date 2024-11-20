@@ -6,18 +6,14 @@ function updateSocialLinks() {
         Array.from(socialLinksDiv.querySelectorAll('label')).map(label => label.dataset.platform)
     );
 
-    // Loop through selected checkboxes
     selectedPlatforms.forEach(checkbox => {
         const platform = checkbox.value;
 
-        // Check if input field for this platform already exists
         if (!existingFields.has(platform)) {
-            // Create label
             const label = document.createElement('label');
             label.innerText = platform;
             label.dataset.platform = platform;
 
-            // Create input field
             const input = document.createElement('input');
             input.type = 'text';
             input.name = `social_links[${platform}]`;
@@ -26,11 +22,10 @@ function updateSocialLinks() {
             // Append label and input field
             socialLinksDiv.appendChild(label);
             socialLinksDiv.appendChild(input);
-            socialLinksDiv.appendChild(document.createElement('br')); // Line break
+            socialLinksDiv.appendChild(document.createElement('br')); 
         }
     });
 
-    // Remove inputs for unchecked platforms
     const uncheckedPlatforms = document.querySelectorAll('input[name="platforms[]"]:not(:checked)');
     uncheckedPlatforms.forEach(checkbox => {
         const platform = checkbox.value;
@@ -40,7 +35,6 @@ function updateSocialLinks() {
             const inputToRemove = label.nextElementSibling;
             const brToRemove = inputToRemove.nextElementSibling;
 
-            // Remove label, input, and line break
             label.remove();
             inputToRemove.remove();
             brToRemove.remove();

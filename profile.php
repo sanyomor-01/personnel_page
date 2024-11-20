@@ -48,7 +48,6 @@ try {
     $stmt->execute([':user_id' => $user_id]);
     $educationDates = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Fetch web presence with platform name
     $sql = "SELECT wp.SocialLink, ws.Name
     FROM webpresence wp
     JOIN webservice ws ON wp.WebServiceID = ws.WebServiceID

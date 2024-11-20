@@ -2,7 +2,7 @@
 session_start();
 require 'db_connect.php';
 
-$message = ""; // Initialize the error message variable
+$message = ""; 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = trim(htmlspecialchars($_POST['username']));
@@ -11,7 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($username) || empty($password)) {
         $message = "Username and password are required.";
     } else {
-        // Prepare statement to prevent SQL injection
         $stmt = $pdo->prepare("SELECT * FROM Personnel WHERE Username = :username");
         $stmt->execute([':username' => $username]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -50,7 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <section class="login-container">
         <h1 class="title">National Service Personnels</h1>
 
-        <!-- Display error message here -->
         <?php if (!empty($message)) { ?>
             <p class="error-message"><?php echo htmlspecialchars($message); ?></p>
         <?php } ?>

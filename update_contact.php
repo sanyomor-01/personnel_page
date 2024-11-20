@@ -16,7 +16,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = htmlspecialchars(trim($_POST['email']), ENT_QUOTES, 'UTF-8');
     $phone = htmlspecialchars(trim($_POST['phone']), ENT_QUOTES, 'UTF-8');
 
-    // Validate inputs
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = "Invalid email format.";
     }

@@ -20,7 +20,6 @@ if (isset($_GET['token'])) {
                 $newPassword = $_POST['new_password'];
                 $confirmPassword = $_POST['confirm_password'];
 
-                // Validate password
                 if ($newPassword !== $confirmPassword) {
                     $message = "Passwords do not match.";
                 } elseif (strlen($newPassword) < 8) {

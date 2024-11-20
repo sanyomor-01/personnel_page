@@ -35,7 +35,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (empty($error)) {
         try {
-            // Prepare the SQL query to update personal details
             $sql = "UPDATE Personnel 
                     SET FirstName = :first_name, 
                         MiddleName = :middle_name, 
@@ -53,17 +52,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 ':user_id' => $user_id
             ]);
 
-            // Handle Profile Picture Upload
             if ($_FILES['profile_picture']['error'] == 0) {
-                $target_dir = "uploads/";  // Folder where images will be stored
+                $target_dir = "uploads/";  
                 $target_file = $target_dir . basename($_FILES["profile_picture"]["name"]);
                 $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-                // Check if the file is a valid image (JPEG, PNG, JPG)
                 $check = getimagesize($_FILES["profile_picture"]["tmp_name"]);
                 if ($check !== false && in_array($imageFileType, ['jpg', 'jpeg', 'png'])) {
                     if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $target_file)) {
-                        // Update the profile picture path in the database
                         $sql = "UPDATE Personnel SET ProfilePicture = :profile_picture WHERE PersonnelID = :user_id";
                         $stmt = $pdo->prepare($sql);
                         $stmt->execute([
@@ -80,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
 
             if (empty($error)) {
-                header("Location: profile.php?message=" . urlencode($message));
+                header("Location: profile.php?message=" . urlencode("Personal information updated successfully"));
                 exit();
             }
         } catch (PDOException $e) {
