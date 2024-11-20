@@ -1,5 +1,6 @@
 <?php
 
+// session_start();
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -19,11 +20,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         foreach ($socialLinks as $platform => $link) {
             $link = trim($link);
 
+            // Validate URL
             if (!empty($link) && !filter_var($link, FILTER_VALIDATE_URL)) {
                 throw new Exception("Invalid URL format for $platform.");
             }
 
             if (!empty($link)) {
+                // Check if platform exists in WebService table
                 $stmt = $pdo->prepare("SELECT WebServiceID FROM WebService WHERE Name = :platform");
                 $stmt->execute([':platform' => $platform]);
                 $platformData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -31,11 +34,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if ($platformData) {
                     $webServiceID = $platformData['WebServiceID'];
                 } else {
+                    // Add new platform if it doesn't exist
                     $stmt = $pdo->prepare("INSERT INTO WebService (Name) VALUES (:platform)");
                     $stmt->execute([':platform' => $platform]);
                     $webServiceID = $pdo->lastInsertId();
                 }
         
+                // Insert or update WebPresence
                 $stmt = $pdo->prepare("INSERT INTO WebPresence (PersonnelID, WebServiceID, SocialLink) 
                                        VALUES (:personnel_id, :platform_id, :link)
                                        ON DUPLICATE KEY UPDATE SocialLink = :link");
@@ -76,6 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h3>Web Presence</h3>
         <p>Select social media platforms and add your profile links:</p>
 
+        <!-- Checkboxes -->
         <label>
             <input type="checkbox" name="platforms[]" value="Facebook" onclick="updateSocialLinks()"> Facebook
         </label><br>
@@ -96,6 +102,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="checkbox" name="platforms[]" value="GitHub" onclick="updateSocialLinks()"> GitHub
         </label><br>
 
+        <!-- Dynamic input fields for social links -->
         <div id="social_links"></div>
 
         <button type="submit">Save Web Presence</button>
