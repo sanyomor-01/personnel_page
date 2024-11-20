@@ -1,10 +1,12 @@
 <?php
 session_start();
-require 'db_connect.php'; 
+require 'db_connect.php';
+
+$message = ""; // Initialize the error message variable
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = trim(htmlspecialchars($_POST['username'])); 
-    $password = trim($_POST['password']); 
+    $username = trim(htmlspecialchars($_POST['username']));
+    $password = trim($_POST['password']);
 
     if (empty($username) || empty($password)) {
         $message = "Username and password are required.";
@@ -40,40 +42,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="./css/login.css"> 
+    <link rel="stylesheet" href="css/login.css">
 </head>
-<body>
-<main> 
 
-    <section class="login-container"> 
-        <h1 class="title" >National Service Personnels<h1>
-        <?php if (isset($error_message)) { echo "<p class='error'>$error_message</p>"; } ?>
-    
+<body>
+<main>
+    <section class="login-container">
+        <h1 class="title">National Service Personnels</h1>
+
+        <!-- Display error message here -->
+        <?php if (!empty($message)) { ?>
+            <p class="error-message"><?php echo htmlspecialchars($message); ?></p>
+        <?php } ?>
+
         <form action="login.php" method="POST">
             <legend>Login</legend>
             <div class="fieldset">
 
                 <div class="input-field">
-                    <label for="username">Username</label>
+                    <label for="username">NSS Number</label>
                     <input type="text" id="username" name="username" required>
                 </div>
-        
+
                 <div class="input-field">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" required>
                 </div>
             </div>
-    
+
             <button type="submit">Login</button>
         </form>
-</section>
+        <p><a href="forgot_password.php">Forgot your password?</a></p>
+    </section>
 </main>
-
 </body>
 </html>
-
-<?php
-if (isset($message)) {
-    echo "<p>" . htmlspecialchars($message) . "</p>"; 
-}
-?>

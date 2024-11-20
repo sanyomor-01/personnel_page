@@ -8,41 +8,36 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
+$message = $_GET['message'] ?? '';
+$section = $_GET['section'] ?? 'personal';
 
 try {
-    $sql = "SELECT * FROM personnel WHERE PersonnelID = :user_id";
-    $stmt = $pdo->prepare($sql);
+    $stmt = $pdo->prepare("SELECT * FROM personnel WHERE PersonnelID = :user_id");
     $stmt->execute([':user_id' => $user_id]);
     $personnel = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $sql = "SELECT * FROM education WHERE PersonnelID = :user_id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([':user_id' => $user_id]);
-    $education = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+    $education = [];
+    $projects = [];
+    $webPresences = [];
 
-    $sql = "SELECT * FROM contact WHERE PersonnelID = :user_id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([':user_id' => $user_id]);
-    $contact = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    $sql = "SELECT * FROM projects WHERE PersonnelID = :user_id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([':user_id' => $user_id]);
-    $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    $sql = "SELECT * FROM section WHERE PersonnelID = :user_id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([':user_id' => $user_id]);
-    $sections = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    $sql = "SELECT * FROM webpresence WHERE PersonnelID = :user_id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([':user_id' => $user_id]);
-    $webPresences = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    if ($personnel) {
-        $profilePicture = $personnel['ProfilePicture'] ?? 'defaultprofile.jpg';
+    if ($section == 'education') {
+        $stmt = $pdo->prepare("
+            SELECT e.*, i.InstitutionName, f.FieldOfStudyName
+            FROM education e
+            LEFT JOIN institution i ON e.InstitutionID = i.InstitutionID
+            LEFT JOIN fieldofstudy f ON e.FieldOfStudyID = f.FieldOfStudyID
+            WHERE e.PersonnelID = :user_id
+        ");
+        $stmt->execute([':user_id' => $user_id]);
+        $education = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } elseif ($section == 'projects') {
+        $stmt = $pdo->prepare("SELECT * FROM projects WHERE PersonnelID = :user_id");
+        $stmt->execute([':user_id' => $user_id]);
+        $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } elseif ($section == 'web_presence') {
+        $stmt = $pdo->prepare("SELECT * FROM webpresence WHERE PersonnelID = :user_id");
+        $stmt->execute([':user_id' => $user_id]);
+        $webPresences = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
 } catch (PDOException $e) {
@@ -58,72 +53,89 @@ try {
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<div class="container">
-    <h2>Your Complete Profile</h2>
-    
-    <h3>Basic Information</h3>
-    
-    <img src="<?= htmlspecialchars($profilePicture); ?>" alt="Profile Picture" style="width:150px;height:150px;border-radius:50%;">
-    <p><strong>Username:</strong> <?= htmlspecialchars($personnel['Username'] ?? 'N/A'); ?></p>
-    <p><strong>Department:</strong> <?= htmlspecialchars($personnel['Department'] ?? 'N/A'); ?></p>
-    <p><strong>Bio:</strong> <?= htmlspecialchars($personnel['Bio'] ?? 'N/A'); ?></p>
+<div class="profile-container">
+    <aside class="sidebar">
+        <h3>Profile</h3>
+        <ul>
+            <li><a href="profile.php?section=personal">Personal Information</a></li>
+            <li><a href="profile.php?section=contact">Contact Information</a></li>
+            <li><a href="profile.php?section=education">Education</a></li>
+            <li><a href="profile.php?section=projects">Projects</a></li>
+            <li><a href="profile.php?section=web_presence">Web Presence</a></li>
+        </ul>
+    </aside>
 
-    <h3>Contact Information</h3>
-    <p><strong>Phone Number:</strong> <?= htmlspecialchars($contact['PhoneNumber'] ?? 'N/A'); ?></p>
-    <p><strong>Email Address:</strong> <?= htmlspecialchars($contact['EmailAddress'] ?? 'N/A'); ?></p>
+    <main class="content">
+        <h2>Profile</h2>
+        <?php if (!empty($message)): ?>
+            <p class="message success"><?= htmlspecialchars($message) ?></p>
+        <?php endif; ?>
 
-    <h3>Education</h3>
-    <?php if ($education): ?>
-        <?php foreach ($education as $edu): ?>
-            <p><strong>Institution:</strong> <?= htmlspecialchars($edu['InstitutionID']); ?></p>
-            <p><strong>Field of Study:</strong> <?= htmlspecialchars($edu['FieldOfStudyID']); ?></p>
-          
-            <hr>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <p>No education information provided.</p>
-    <?php endif; ?>
+        <?php if ($section == 'personal'): ?>
+            <h3>Personal Information</h3>
+            <p><strong>Username:</strong> <?= htmlspecialchars($personnel['Username'] ?? 'N/A'); ?></p>
+            <p><strong>First Name:</strong> <?= htmlspecialchars($personnel['FirstName'] ?? 'N/A'); ?></p>
+            <p><strong>Middle Name:</strong> <?= htmlspecialchars($personnel['MiddleName'] ?? 'N/A'); ?></p>
+            <p><strong>Last Name:</strong> <?= htmlspecialchars($personnel['LastName'] ?? 'N/A'); ?></p>
+            <p><strong>Gender:</strong> <?= htmlspecialchars($personnel['Gender'] ?? 'N/A'); ?></p>
+            <p><strong>Department:</strong> <?= htmlspecialchars($personnel['Department'] ?? 'N/A'); ?></p>
+            <p><strong>Bio:</strong> <?= htmlspecialchars($personnel['Bio'] ?? 'N/A'); ?></p>
+            <p><a href="update_personal.php">Edit Personal Information</a></p>
 
-    <h3>Project Information</h3>
-    <?php if ($projects): ?>
-        <?php foreach ($projects as $project): ?>
-            <p><strong>Project Title:</strong> <?= htmlspecialchars($project['ProjectTitle']); ?></p>
-            <p><strong>Role:</strong> <?= htmlspecialchars($project['Role']); ?></p>
-            <p><strong>Date:</strong> <?= htmlspecialchars($project['Date']); ?></p>
-            <hr>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <p>No project information provided.</p>
-    <?php endif; ?>
+        <?php elseif ($section == 'contact'): ?>
+            <h3>Contact Information</h3>
+            <p><strong>Phone Number:</strong> <?= htmlspecialchars($personnel['Phone'] ?? 'N/A'); ?></p>
+            <p><strong>Email Address:</strong> <?= htmlspecialchars($personnel['Email'] ?? 'N/A'); ?></p>
+            <p><a href="update_contact.php">Edit Contact Information</a></p>
 
-    <h3>Section Information</h3>
-    <?php if ($sections): ?>
-        <?php foreach ($sections as $section): ?>
-            <p><strong>Section:</strong> <?= htmlspecialchars($section['SectionListID']); ?></p>
-            <p><strong>Start Date:</strong> <?= htmlspecialchars($section['StartDate']); ?></p>
-            <p><strong>End Date:</strong> <?= htmlspecialchars($section['EndDate']); ?></p>
-            <hr>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <p>No section information provided.</p>
-    <?php endif; ?>
+        <?php elseif ($section == 'education'): ?>
+            <h3>Education</h3>
+            <?php if ($education): ?>
+                <?php foreach ($education as $edu): ?>
+                    <p><strong>Institution:</strong> <?= htmlspecialchars($edu['InstitutionName'] ?? 'N/A'); ?></p>
+                    <p><strong>Field of Study:</strong> <?= htmlspecialchars($edu['FieldOfStudyName'] ?? 'N/A'); ?></p>
+                    <hr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>No education information provided.</p>
+            <?php endif; ?>
+            <p><a href="update_education.php">Edit Education Information</a></p>
 
-    <h3>Web Presence</h3>
-    <?php if ($webPresences): ?>
-        <?php foreach ($webPresences as $web): ?>
-            <p><strong>Web Service:</strong> <?= htmlspecialchars($web['WebServiceID']); ?></p>
-            <p><strong>Social Link:</strong> <a href="<?= htmlspecialchars($web['SocialLink']); ?>" target="_blank"><?= htmlspecialchars($web['SocialLink']); ?></a></p>
-            <hr>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <p>No web presence information provided.</p>
-    <?php endif; ?>
+        <?php elseif ($section == 'projects'): ?>
+            <h3>Project Information</h3>
+            <?php if ($projects): ?>
+                <?php foreach ($projects as $project): ?>
+                    <p><strong>Project Title:</strong> <?= htmlspecialchars($project['ProjectTitle'] ?? 'N/A'); ?></p>
+                    <p><strong>Role:</strong> <?= htmlspecialchars($project['Role'] ?? 'N/A'); ?></p>
+                    <p><strong>Date:</strong> <?= htmlspecialchars($project['Date'] ?? 'N/A'); ?></p>
+                    <hr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>No project information provided.</p>
+            <?php endif; ?>
+            <p><a href="update_projects.php">Edit Project Information</a></p>
 
-    <p><a href="update_profile.php">Edit Profile</a></p> 
-<div style="margin-top: 20px;">
-    <form action="logout.php" method="POST">
-        <button type="submit" class="btn-logout">Logout</button>
-    </form>
+        <?php elseif ($section == 'web_presence'): ?>
+            <h3>Web Presence</h3>
+            <?php if ($webPresences): ?>
+                <?php foreach ($webPresences as $web): ?>
+                    <p><strong>Web Service:</strong> <?= htmlspecialchars($web['WebServiceID'] ?? 'N/A'); ?></p>
+                    <p><strong>Social Link:</strong> <a href="<?= htmlspecialchars($web['SocialLink'] ?? '#'); ?>" target="_blank"><?= htmlspecialchars($web['SocialLink'] ?? 'N/A'); ?></a></p>
+                    <hr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>No web presence information provided.</p>
+            <?php endif; ?>
+            <p><a href="update_web_presence.php">Edit Web Presence</a></p>
+
+        <?php else: ?>
+            <p>Section not found.</p>
+        <?php endif; ?>
+
+        <form action="logout.php" method="POST">
+            <button type="submit" class="btn-logout">Logout</button>
+        </form>
+    </main>
 </div>
 </body>
 </html>

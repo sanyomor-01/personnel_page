@@ -40,20 +40,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':personnelID' => $personnelID
     ]);
 
-    $successMessage = "<p class='success-message'>Profile updated successfully!</p>";
+    $_SESSION['success_message'] = "Profile updated successfully!";
+header("Location: admin_dashboard.php");
+exit();
+
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+<button onclick="window.history.back()" class="back-button">Go Back</button>
+
 <head>
     <meta charset="UTF-8">
     <title>Edit Profile</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/edit_profile.css">
 </head>
+
 <body>
 <div class="container">
-    <h2>Edit Profile</h2>
+    <h1>Edit Profile</h1>
     <?php if (isset($successMessage)) echo $successMessage; ?>
 
     <form method="POST" action="edit_profile.php?id=<?= htmlspecialchars($personnelID) ?>">
@@ -76,6 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="date" name="end_date" value="<?= htmlspecialchars($userData['EndDate'] ?? '') ?>"><br>
 
         <button type="submit">Update Profile</button>
+
     </form>
     
 </div>

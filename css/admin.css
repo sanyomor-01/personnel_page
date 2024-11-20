@@ -64,9 +64,13 @@ button:hover {
 }
 
 .btn-logout {
-    background-color: #dc3545;
+    background-color: #de2c3e;
 }
-/* Style for buttons */
+.btn-logout:hover{
+    background-color: #a20717;
+}
+
+
 .btn {
     display: inline-block;
     padding: 10px 20px;
