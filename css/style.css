@@ -229,6 +229,7 @@ select#social_platforms {
 }
 .back-button {
   position: fixed;
+  position: fixed;
   top: 20px;
   left: 20px;
   padding: 5px ;
@@ -302,6 +303,7 @@ form input {
 
 form button {
   padding: 10px 20px;
+  background-color: #007bff;
   background-color: #007bff;
   color: white;
   border: none;
@@ -395,7 +397,57 @@ form {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  cursor: pointer;
   transition: background-color 0.3s;
+}
+
+.forgot-password-container button:hover {
+  background-color: #3b7e9c;
+}
+
+.forgot-password-container .message {
+  color: #d9534f;
+  background-color: #f2dede;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.forgot-password-container .message.success {
+  color: #34a352;
+  background-color: #d9edf7;
+}
+
+
+
+/* Style to align checkboxes and labels */
+.platform-label {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.platform-label input[type="checkbox"] {
+    margin-right: 8px; 
+}
+
+form {
+    margin: 20px;
+}
+
+#social_links label {
+    display: block;
+    margin-top: 10px;
+}
+
+#social_links input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 .forgot-password-container button:hover {

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Web Presence</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <button onclick="window.history.back()" class="back-button">Go Back</button>
+
+    <form method="POST" action="update_web_presence.php">
+        <h3>Web Presence</h3>
+        <p>Select social media platforms and add your profile links:</p>
+
+        <div class="platform-label">
+            <input type="checkbox" name="platforms[]" value="Facebook" onclick="updateSocialLinks()"> 
+            <span>Facebook</span>
+        </div>
+
+        <div class="platform-label">
+            <input type="checkbox" name="platforms[]" value="Twitter" onclick="updateSocialLinks()"> 
+            <span>Twitter</span>
+        </div>
+
+        <div class="platform-label">
+            <input type="checkbox" name="platforms[]" value="LinkedIn" onclick="updateSocialLinks()"> 
+            <span>LinkedIn</span>
+        </div>
+
+        <div class="platform-label">
+            <input type="checkbox" name="platforms[]" value="Instagram" onclick="updateSocialLinks()"> 
+            <span>Instagram</span>
+        </div>
+
+        <div class="platform-label">
+            <input type="checkbox" name="platforms[]" value="GitHub" onclick="updateSocialLinks()"> 
+            <span>GitHub</span>
+        </div>
+
+        <div id="social_links"></div>
+
+        <button type="submit">Save Web Presence</button>
+    </form>
+
+    <script src="script.js"></script> 
+
+</body>
+</html>
