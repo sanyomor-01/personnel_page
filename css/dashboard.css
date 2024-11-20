@@ -141,3 +141,9 @@ button.btn-logout {
 button.btn-logout:hover{
     background-color: rgb(170, 0, 0);
 }
+
+
+.profile-overview {
+
+    text-align: center;
+}

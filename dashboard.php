@@ -38,10 +38,11 @@ $personnel = $stmt->fetch(PDO::FETCH_ASSOC);
 
         <section class="profile-overview">
             <h2>Your Profile</h2>
+            <img src="<?= htmlspecialchars($personnel['ProfilePicture'] ?? 'defaultprofile.jpg'); ?>" alt="Profile Picture" style="width:150px;height:150px;border-radius:50%;">
             <p><strong>Full Name:</strong> <?= htmlspecialchars($personnel['FirstName'] . ' ' . $personnel['MiddleName'] . ' ' . $personnel['LastName']); ?></p>
-            <p><strong>NSS Number:</strong> <?= htmlspecialchars($personnel['NSSNumber']); ?></p>
+            <p><strong>NSS Number:</strong> <?= htmlspecialchars($personnel['Username']); ?></p>
             <p><strong>Bio:</strong> <?= htmlspecialchars($personnel['Bio'] ?? 'Not provided'); ?></p>
-            <p><strong>Current Project:</strong> <?= htmlspecialchars($personnel['Project'] ?? 'Not provided'); ?></p>
+            <!-- <p><strong>Current Project:</strong> <?= htmlspecialchars($personnel['Project'] ?? 'Not provided'); ?></p> -->
         </section>
 
         <section class="profile-update">
@@ -50,8 +51,18 @@ $personnel = $stmt->fetch(PDO::FETCH_ASSOC);
                 <label for="bio">Bio:</label>
                 <textarea name="bio" id="bio" rows="4" placeholder="Enter your bio..."><?= htmlspecialchars($personnel['Bio'] ?? '') ?></textarea>
 
-                <label for="project">Current Project:</label>
-                <input type="text" name="project" id="project" value="<?= htmlspecialchars($personnel['Project'] ?? '') ?>" placeholder="Current Project">
+                <label for="firstname">First Name</label>
+                <input type="text" name="firstname" id="firstname" value="<?=htmlspecialchars($personnel['FirstName'] ?? '') ?>" placeholder="First Name">
+                
+                <label for="middlename">Middle Name</label>
+                <input type="text" name="middlename" id="middlename" value="<?=htmlspecialchars($personnel['MiddleName'] ?? '') ?>" placeholder="Middle Name">
+               
+                <label for="lastname">First Name</label>
+                <input type="text" name="lastname" id="lastname" value="<?=htmlspecialchars($personnel['LastName'] ?? '') ?>" placeholder="Last Name">
+               
+               
+                <!-- <label for="project">Current Project:</label> -->
+                <!-- <input type="text" name="project" id="project" value="<?= htmlspecialchars($personnel['Project'] ?? '') ?>" placeholder="Current Project"> -->
 
                 <button type="submit">Update Profile</button>
             </form>
