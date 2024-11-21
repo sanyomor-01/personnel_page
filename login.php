@@ -1,15 +1,16 @@
 <?php
 session_start();
-require 'db_connect.php'; 
+require 'db_connect.php';
+
+$message = ""; 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = trim(htmlspecialchars($_POST['username'])); 
-    $password = trim($_POST['password']); 
+    $username = trim(htmlspecialchars($_POST['username']));
+    $password = trim($_POST['password']);
 
     if (empty($username) || empty($password)) {
         $_SESSION['message'] = "Username and password are required.";
     } else {
-        // Prepare statement to prevent SQL injection
         $stmt = $pdo->prepare("SELECT * FROM Personnel WHERE Username = :username");
         $stmt->execute([':username' => $username]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -49,8 +50,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="./css/login.css"> 
+    <link rel="stylesheet" href="css/login.css">
 </head>
+
 <body>
 <main> 
     <section class="login-container"> 
@@ -71,18 +73,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="fieldset">
 
                 <div class="input-field">
-                    <label for="username">Username</label>
+                    <label for="username">NSS Number</label>
                     <input type="text" id="username" name="username" required>
                 </div>
-        
+
                 <div class="input-field">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" required>
                 </div>
             </div>
-    
+
             <button type="submit">Login</button>
         </form>
+        <p><a href="forgot_password.php">Forgot your password?</a></p>
     </section>
 </main>
 </body>

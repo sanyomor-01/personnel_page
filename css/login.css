@@ -93,3 +93,20 @@ button{
 button:hover{
     background: #5d5d5d;
 }
+
+.error-message {
+    font-size: 14px;
+    color: #ff4d4d; 
+    background-color: #ffe6e6; 
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin-top: var(--gap-8);
+    border: 1px solid #ff4d4d;
+    line-height: 1.4;
+}
+
+.error-message::before {
+    content: "⚠️ "; 
+    font-size: 16px;
+    margin-right: var(--gap-4);
+}

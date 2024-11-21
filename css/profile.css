@@ -1,0 +1,62 @@
+.container {
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9; 
+    display: flex;
+    flex-direction: column;  
+    align-items: center;     
+    justify-content: center; 
+    text-align: center;     
+    max-width: 800px;        
+}
+
+.back-button {
+    background-color: #4c4c4c;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 20px;
+   
+}
+
+.back-button:hover{
+    background-color: #2e2e2e;
+}
+
+
+.message.success {
+    color: green;
+    background-color: #e0f8e0;
+    padding: 10px;
+    border: 1px solid #d0f0d0;
+    margin-bottom: 20px;
+}
+
+.btn-logout {
+    background-color: #fc1b1b;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+.btn-logout:hover {
+    background-color: #c0392b;
+  }
+
+
+img {
+    display: block;
+    margin: 0 auto 15px; /* Center image and add space below */
+    border-radius: 50%;   /* Make it a circle */
+    width: 150px;         
+    height: 150px;       
+}
+
+h3 {
+    color: blue;          
+    font-size: 24px;     
+    font-weight: bold;    
+    margin-bottom: 15px;  
+    text-align: center;   
+}
