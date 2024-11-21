@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = trim($_POST['password']); 
 
     if (empty($username) || empty($password)) {
-        $message = "Username and password are required.";
+        $_SESSION['message'] = "Username and password are required.";
     } else {
         // Prepare statement to prevent SQL injection
         $stmt = $pdo->prepare("SELECT * FROM Personnel WHERE Username = :username");
@@ -19,6 +19,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['username'] = $user['Username'];
             $_SESSION['role'] = $user['role'];
 
+            if ($user['Password_Changed'] == 0 && $_SESSION['role'] != 'admin') {
+                header("Location: change_password.php");
+                exit();
+            }
+
             if ($_SESSION['role'] == 'admin') {
                 header("Location: admin_dashboard.php");
                 exit();
@@ -27,9 +32,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 exit();
             }
         } else {
-            $message = "Invalid username or password.";
+            $_SESSION['message'] = "Invalid username or password.";
         }
     }
+
+    // Redirect back to the login page to display the message
+    header("Location: login.php");
+    exit();
 }
 ?>
 
@@ -44,11 +53,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body>
 <main> 
-
     <section class="login-container"> 
-        <h1 class="title" >National Service Personnels<h1>
-        <?php if (isset($error_message)) { echo "<p class='error'>$error_message</p>"; } ?>
-    
+        <h1 class="title">National Service Personnels</h1>
+
+        <!-- Display the error message if it exists, then clear it -->
+        <?php if (isset($_SESSION['message'])): ?>
+            <p style="color: red; font-size: 14px; text-align: center; margin: 10px 0;">
+                <?php 
+                echo htmlspecialchars($_SESSION['message']); 
+                unset($_SESSION['message']); // Clear the message
+                ?>
+            </p>
+        <?php endif; ?>
+
         <form action="login.php" method="POST">
             <legend>Login</legend>
             <div class="fieldset">
@@ -66,14 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
             <button type="submit">Login</button>
         </form>
-</section>
+    </section>
 </main>
-
 </body>
 </html>
-
-<?php
-if (isset($message)) {
-    echo "<p>" . htmlspecialchars($message) . "</p>"; 
-}
-?>

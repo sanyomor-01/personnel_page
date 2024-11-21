@@ -5,7 +5,7 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-echo "Welcome, " . htmlspecialchars($_SESSION['username']) . "!";
+
 
 try {
     $pdo = new PDO('mysql:host=localhost;dbname=nssdirectory_db', 'root', '');
