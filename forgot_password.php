@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Forgot Password</title>
-    <link rel="stylesheet" href="css/style.css"> 
+    <link rel="stylesheet" href="css/forgot_password.css"> 
     <button onclick="window.history.back()" class="back-button">Go Back</button> 
 
 </head>
