@@ -1,37 +1,53 @@
 <?php
 session_start();
-include 'db_connect.php'; // Database connection
+require 'db_connect.php';
 
-// Ensure the user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
 
-// Handle form submission
+$user_id = $_SESSION['user_id'];
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $new_password = trim($_POST['new_password']);
     $confirm_password = trim($_POST['confirm_password']);
-    $user_id = $_SESSION['user_id'];
 
-    // Check if passwords match
+    $errors = [];
+
+    if (empty($new_password) || empty($confirm_password)) {
+        $errors[] = "Both fields are required.";
+    }
+
     if ($new_password !== $confirm_password) {
-        $error_message = "Passwords do not match. Please try again.";
-    } elseif (!preg_match('/^(?=.*[A-Z])(?=.*\d).{8,}$/', $new_password)) {
-        // Validate password strength
-        $error_message = "Password must be at least 8 characters long, include an uppercase letter, and a number.";
-    } else {
-        // Hash the password
-        $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+        $errors[] = "Passwords do not match.";
+    }
 
-        // Update the password and set password_changed to TRUE
-        $stmt = $pdo->prepare("UPDATE personnel SET password = ?, password_changed = 1 WHERE PersonnelID = ?");
-        if ($stmt->execute([$hashed_password,$user_id])) {
-            // Redirect to dashboard after success
+    if (strlen($new_password) < 8) {
+        $errors[] = "Password must be at least 8 characters long.";
+    }
+    if (!preg_match('/[A-Z]/', $new_password)) {
+        $errors[] = "Password must contain at least one uppercase letter.";
+    }
+    if (!preg_match('/\d/', $new_password)) {
+        $errors[] = "Password must contain at least one number.";
+    }
+    if (!preg_match('/[^\w]/', $new_password)) {
+        $errors[] = "Password must contain at least one special character (e.g., @, #, $, etc.).";
+    }
+
+    if (empty($errors)) {
+        try {
+            $hashed_password = password_hash($new_password, PASSWORD_BCRYPT);
+
+            $sql = "UPDATE Personnel SET Password = :password, password_changed = 1 WHERE PersonnelID = :user_id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([':password' => $hashed_password, ':user_id' => $user_id]);
+
             header("Location: dashboard.php");
-            exit;
-        } else {
-            $error_message = "An error occurred. Please try again.";
+            exit();
+        } catch (PDOException $e) {
+            $errors[] = "Error updating password: " . $e->getMessage();
         }
     }
 }
@@ -43,57 +59,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Change Password</title>
-    <link rel="stylesheet" href="./css/login.css">
+    <link rel="stylesheet" href="css/forgot_password.css">
 </head>
 <body>
-<main>
-    <section class="login-container">
-        <h1 class="title">National Service Personnel</h1>
-        <?php if (isset($error_message)) { echo "<p class='error'>" . htmlspecialchars($error_message) . "</p>"; } ?>
 
-        <form action="change_password.php" method="POST" id="passwordForm">
-            <legend>Update Your Password</legend>
-            <div class="fieldset">
+<div class="container">
+    <h1>Change Your Password</h1>
 
-                <div class="input-field">
-                    <label for="new_password">New Password:</label>
-                    <input type="password" id="new_password" name="new_password" required>
-                </div>
+    <?php if (!empty($errors)): ?>
+        <div class="error-messages">
+            <?php foreach ($errors as $error): ?>
+                <p class="error"><?= htmlspecialchars($error); ?></p>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
 
-                <div class="input-field">
-                    <label for="confirm_password">Confirm Password:</label>
-                    <input type="password" id="confirm_password" name="confirm_password" required>
-                </div>
-            </div>
+    <form action="change_password.php" method="POST">
+        <label for="new_password">New Password</label>
+        <input type="password" id="new_password" name="new_password" required>
 
-            <p id="errorMessage" style="color: red;"></p>
-            <button type="submit">Change Password</button>
-        </form>
-    </section>
-</main>
+        <label for="confirm_password">Confirm New Password</label>
+        <input type="password" id="confirm_password" name="confirm_password" required>
 
-<script>
-    document.getElementById('passwordForm').addEventListener('submit', function (e) {
-        const newPassword = document.getElementById('new_password').value;
-        const confirmPassword = document.getElementById('confirm_password').value;
-        const errorMessage = document.getElementById('errorMessage');
+        <button type="submit">Update Password</button>
+    </form>
 
-        // Check if passwords match
-        if (newPassword !== confirmPassword) {
-            e.preventDefault();
-            errorMessage.textContent = "Passwords do not match.";
-            return;
-        }
+   
+</div>
 
-        // Check password strength
-        const isValid = /^(?=.*[A-Z])(?=.*\d).{8,}$/.test(newPassword);
-        if (!isValid) {
-            e.preventDefault();
-            errorMessage.textContent = "Password must be at least 8 characters long, include an uppercase letter and a number.";
-        } else {
-            errorMessage.textContent = "";
-        }
-    });
-</script>
 </body>
 </html>
