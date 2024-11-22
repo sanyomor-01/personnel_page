@@ -1,15 +1,15 @@
 <?php
 session_start();
-require 'db_connect.php';
+require 'db_connect.php'; 
 
 $message = ""; 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = trim(htmlspecialchars($_POST['username']));
-    $password = trim($_POST['password']);
+    $username = trim(htmlspecialchars($_POST['username'])); 
+    $password = trim($_POST['password']); 
 
     if (empty($username) || empty($password)) {
-        $_SESSION['message'] = "Username and password are required.";
+        $message = "Username and password are required.";
     } else {
         $stmt = $pdo->prepare("SELECT * FROM Personnel WHERE Username = :username");
         $stmt->execute([':username' => $username]);
@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['username'] = $user['Username'];
             $_SESSION['role'] = $user['role'];
 
-            if ($user['Password_Changed'] == 0 && $_SESSION['role'] != 'admin') {
+            if ($user['password_changed'] == 0) {
                 header("Location: change_password.php");
                 exit();
             }
@@ -33,13 +33,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 exit();
             }
         } else {
-            $_SESSION['message'] = "Invalid username or password.";
+            $message = "Invalid username or password.";
         }
     }
-
-    // Redirect back to the login page to display the message
-    header("Location: login.php");
-    exit();
 }
 ?>
 
@@ -54,19 +50,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 
 <body>
-<main> 
-    <section class="login-container"> 
+<main>
+    <section class="login-container">
         <h1 class="title">National Service Personnels</h1>
 
-        <!-- Display the error message if it exists, then clear it -->
-        <?php if (isset($_SESSION['message'])): ?>
-            <p style="color: red; font-size: 14px; text-align: center; margin: 10px 0;">
-                <?php 
-                echo htmlspecialchars($_SESSION['message']); 
-                unset($_SESSION['message']); // Clear the message
-                ?>
-            </p>
-        <?php endif; ?>
+        <?php if (!empty($message)) { ?>
+            <p class="error-message"><?php echo htmlspecialchars($message); ?></p>
+        <?php } ?>
 
         <form action="login.php" method="POST">
             <legend>Login</legend>
